@@ -12,7 +12,6 @@ export class AuthContextProvider extends React.Component {
         }
     }
     loginHandler = (value) => {
-        console.log("Logged");
         this.setState({
             isLoggedIn: value
         })

@@ -12,23 +12,14 @@ class Login extends React.Component {
     }
     static contextType = AuthContext;
 
-    emailHandler = (event) => {
-        this.setState({ email: event.target.value })
-    }
-
-    passwordHandler = (event) => {
-        this.setState({ password: event.target.value })
-    }
-
-    componentDidMount() {
-        console.log(this.context)
+    inputHandler = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value,
+        })
     }
 
     submitHandler = (event) => {
         event.preventDefault();
-        console.log('Form Submitted');
-        console.log(this.state.email, this.state.password);
-
 
         fetch("http://localhost:8085/auth", {
             method: "POST",
@@ -47,7 +38,6 @@ class Login extends React.Component {
             })
             .then((data) => {
                 this.context.login(true);
-                console.log(data.message);
             })
             .catch((err) => {
                 alert(err.message)
@@ -58,22 +48,20 @@ class Login extends React.Component {
         if (this.context.isLoggedIn) {
             return <Redirect to="dashboard" />
         }
-        else {
-            return (
-                <div>
-                    <h1>Login Page</h1>
-                    <form onSubmit={this.submitHandler}>
-                        <label>Enter Email</label>
-                        <input type='text' ref={this.nameInput} onChange={this.emailHandler}></input>
+        return (
+            <div>
+                <h1>Login Page</h1>
+                <form onSubmit={this.submitHandler}>
+                    <label>Enter Email</label>
+                    <input type='text' name="email" onChange={this.inputHandler}></input>
 
-                        <label>Enter Password</label>
-                        <input type='password' ref={this.passwordInput} onChange={this.passwordHandler}></input>
+                    <label>Enter Password</label>
+                    <input type='password' name="password" onChange={this.inputHandler}></input>
 
-                        <button type="submit">Login</button>
-                    </form>
-                </div>
-            )
-        }
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        )
     }
 }
 
